@@ -1,0 +1,13 @@
+set(EXAMPLE_LABEL c)
+
+add_example(c_switch          SOURCES switch.c)
+add_example(c_pointer_2d      SOURCES pointer_2d.c)
+add_example(c_types           SOURCES types.c)
+add_example(c_union           SOURCES union.c)
+add_example(c_copy            SOURCES copy.c)
+add_example(c_qualifiers      SOURCES qualifiers.c)
+add_example(c_preprocessor    SOURCES preprocessor.c)
+add_example(c_error_cleanup   SOURCES error_cleanup.c   DATA sample.txt)
+add_example(c_signal_handler  SOURCES signal_handler.c)
+add_example(c_signal_timeout  SOURCES signal_timeout.c)
+add_example(c_file_io         SOURCES file_io.c         DATA sample.txt)

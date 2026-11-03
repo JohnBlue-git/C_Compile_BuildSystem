@@ -1,2 +1,85 @@
-# C_Compile_BuildSystem
-Notes or tutorial about C C++ language, Compile, Build System, and playground that can use.
+# C / C++ / Compile: Interview Notes and Playground
+
+Interview-oriented notes on C, C++, memory, and the build toolchain (gcc/g++,
+linker, CMake). Every note links to example programs that build and run, and
+one Docker image provides the same toolchain on every machine.
+
+## Topics
+
+| Directory | What it covers |
+|---|---|
+| [C/](markdowns/C/README.md) | Pointers and arrays, types and `sizeof`, callbacks, strings and copy APIs, qualifiers, preprocessor, signals, file I/O |
+| [CXX/](markdowns/CXX/README.md) | RAII, smart pointers, concurrency, move semantics and RVO, lambdas, casts and exceptions, C++11–20, STL containers, OOP and design patterns, streams, JSON |
+| [Compile/](markdowns/Compile/README.md) | Preprocess → compile → assemble → link → load, linkage, ODR, ABI, `extern "C"`, static and shared libraries, `dlopen`, gcc vs g++, CMake |
+| [Memory/](markdowns/Memory/README.md) | Stack, heap, and static storage, object lifetime, callback lifetime, sanitizer bug demos |
+| [playground/](playground/README.md) | Scratch area: drop in a `.c`/`.cpp` file, then build and run it |
+
+Suggested order for interview preparation:
+**Compile → C → Memory → CXX** (core 00–05, then 06–10 as needed).
+
+## Quick start
+
+Requirements: Docker and GNU Make. You don't need a compiler or CMake on the host.
+
+```bash
+make image                            # build the toolchain image (once, about 2 minutes)
+make test                             # build all examples and run them as tests
+make run EX=cxx_move_semantics        # build and run one example
+make test PRESET=asan                 # all examples again, with AddressSanitizer + UBSan
+make shell                            # interactive shell with gcc, clang, cmake, gdb, valgrind
+```
+
+Each example's target name is listed in the README of its topic directory.
+
+Inside `make shell` you use plain CMake:
+
+```bash
+cmake --preset debug && cmake --build --preset debug
+ctest --preset debug -L '^memory$'    # one topic: c, cxx, compile, memory (-L is a regex)
+```
+
+### Build presets
+
+| Preset | Compiler | Use it for |
+|---|---|---|
+| `debug` (default) | gcc 13 | Normal work |
+| `release` | gcc 13, `-O2` | Benchmarks (for example the CRTP benchmark), optimizer behavior |
+| `asan` | gcc 13, `-fsanitize=address,undefined` | Finding memory bugs and UB, and the Memory bug demos |
+| `clang` | clang 18 | Comparing diagnostics and behavior with a second compiler |
+
+Every preset builds into `build/<preset>/`. Run `make clean` to delete all build output.
+
+## Toolchain image
+
+[docker/Dockerfile](docker/Dockerfile) is based on `ubuntu:24.04`, **pinned by
+digest**. Every rebuild starts from the same OS snapshot, and Ubuntu LTS
+packages receive only security and bug-fix updates.
+
+| Tool | Version |
+|---|---|
+| gcc / g++ | 13.3 |
+| clang / clang++ | 18.1 |
+| CMake / Ninja | 3.28 / 1.11 |
+| gdb / valgrind | 15.1 / 3.22 |
+| Boost.JSON / nlohmann-json | 1.83 / 3.11.3 |
+
+Why this image and not the official `gcc:<version>` image: the `gcc` image
+doesn't include CMake, clang, gdb, or valgrind, and its tags are rebuilt often.
+Ubuntu LTS gives two compilers and all the debugging tools from one stable
+package set.
+
+The container runs as your host user, so build output in `build/` belongs to
+you and not to root. It also has `SYS_PTRACE`, so gdb and sanitizers work.
+
+## Repository conventions
+
+- Each topic has `NN_topic.md` notes and an `examples/` directory.
+- Examples are registered with `add_example(<name> SOURCES ...)` from
+  [cmake/Examples.cmake](cmake/Examples.cmake). Each one is also a CTest test,
+  labeled by topic. Target names start with the topic prefix: `c_`, `cxx_`,
+  `compile_`, `memory_`.
+- Warnings are on for every example (`-Wall -Wextra -Wpedantic`) through the
+  `example_warnings` interface target. The examples compile without warnings.
+- Standards: C17 and C++20, with compiler extensions off.
+- The repository's own build files are a worked example of target-based
+  CMake. [Compile/02_modern_cmake.md](markdowns/Compile/02_modern_cmake.md) explains them.
