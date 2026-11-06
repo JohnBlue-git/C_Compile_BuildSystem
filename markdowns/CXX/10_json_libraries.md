@@ -54,7 +54,7 @@ Interview-relevant details:
 - **Object key order**: `nlohmann::json` stores objects in a `std::map`, so keys come out sorted, not in insertion order. Use `nlohmann::ordered_json` to keep insertion order.
 - **Your own types**: define `to_json`/`from_json`, or use `NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Person, name, age)`, then `json j = person; auto p = j.get<Person>();`.
 
-Run it: `make run EX=cxx_json_nlohmann` (writes `person.json` into the test's working directory).
+Run it: `make run EX=cxx_json_nlohmann` ([examples/library/json/nlohmann_basic.cpp](examples/library/json/nlohmann_basic.cpp)) (writes `person.json` into the test's working directory).
 
 ## 2. JSON Pointer in nlohmann/json
 
@@ -78,7 +78,7 @@ j["/server/port"_json_pointer] = 8080;         // creates the missing "server" o
 json flat  = j.flatten();
 ```
 
-Run it: `make run EX=cxx_json_nlohmann_pointer`
+Run it: `make run EX=cxx_json_nlohmann_pointer` ([examples/library/json/nlohmann_pointer.cpp](examples/library/json/nlohmann_pointer.cpp))
 
 ## 3. Boost.JSON basics
 
@@ -106,7 +106,7 @@ if (auto* email = o.if_contains("email")) { /* ... */ }      // nullptr if missi
 - `value_from` / `value_to` with `tag_invoke` overloads convert your own types.
 - For error codes instead of exceptions: `json::parse(text, ec)`.
 
-Run it: `make run EX=cxx_json_boost` (writes `person_boost.json` into the test's working directory).
+Run it: `make run EX=cxx_json_boost` ([examples/library/json/boost_basic.cpp](examples/library/json/boost_basic.cpp)) (writes `person_boost.json` into the test's working directory).
 
 ## 4. Navigating nested Boost.JSON values
 
@@ -129,7 +129,7 @@ if (jv.find_pointer("/nested/four", ec) == nullptr) {
 
 Boost 1.83 (the version in the Docker image) also has `value::set_at_pointer` to write through a pointer. nlohmann's `flatten`/`unflatten` and the `_json_pointer` literal have no Boost.JSON equivalent.
 
-Run it: `make run EX=cxx_json_boost_pointer`
+Run it: `make run EX=cxx_json_boost_pointer` ([examples/library/json/boost_pointer.cpp](examples/library/json/boost_pointer.cpp))
 
 ## 5. Choosing one
 

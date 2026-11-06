@@ -4,20 +4,8 @@
 # Usage: bash lab.sh [work-dir]     (default: a new temporary directory)
 set -euo pipefail
 
-src=$(cd "$(dirname "$0")" && pwd)
-work=${1:-$(mktemp -d)}
-mkdir -p "$work" && cd "$work"
+source "$(dirname "$0")/../lab_common.sh" "$@"
 cp "$src"/*.h "$src"/*.c "$src"/*.cpp .
-echo "work dir: $work"
-
-step() { printf '\n=== %s ===\n' "$*"; }
-run()  { printf '$ %s\n' "$*"; "$@"; }
-fails() {
-    printf '$ %s    # expected to fail\n' "$*"
-    if "$@" > out.txt 2>&1; then cat out.txt; echo "LAB ERROR: command succeeded"; exit 1; fi
-    cat out.txt
-}
-expect() { grep -q -- "$2" "$1" || { echo "LAB ERROR: '$2' not found in $1"; exit 1; }; }
 
 step "1. A variable defined in a header -> multiple definition"
 run gcc -c use_a.c -o use_a.o

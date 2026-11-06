@@ -10,6 +10,8 @@ IMAGE  ?= cpp-playground:latest
 PRESET ?= debug
 EX     ?=
 
+BUILD = cmake --preset $(PRESET) && cmake --build --preset $(PRESET)
+
 TTY := $(shell [ -t 0 ] && echo -it)
 DOCKER_RUN = docker run --rm $(TTY) \
 	-v "$(CURDIR)":/work -w /work \
@@ -26,10 +28,10 @@ shell:
 	$(DOCKER_RUN) bash
 
 build:
-	$(DOCKER_RUN) bash -c 'cmake --preset $(PRESET) && cmake --build --preset $(PRESET)'
+	$(DOCKER_RUN) bash -c '$(BUILD)'
 
 test:
-	$(DOCKER_RUN) bash -c 'cmake --preset $(PRESET) && cmake --build --preset $(PRESET) && ctest --preset $(PRESET)'
+	$(DOCKER_RUN) bash -c '$(BUILD) && ctest --preset $(PRESET)'
 
 run:
 	@test -n "$(EX)" || { echo "usage: make run EX=<target name>"; exit 1; }

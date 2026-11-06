@@ -38,7 +38,7 @@ free(rows);
 - Passing `int **` lets the function modify the caller's elements, but the function still gets a *copy* of the pointer. See [02](02_functions_callbacks_and_arguments.md).
 - When the column count is fixed, one contiguous block (`int (*grid)[COLS] = malloc(rows * sizeof *grid);`) needs only one `malloc`/`free` and is more cache-friendly.
 
-Run it: `make run EX=c_pointer_2d`
+Run it: `make run EX=c_pointer_2d` ([examples/pointer_2d.c](examples/pointer_2d.c))
 
 ## Strings and lifetime
 
@@ -71,7 +71,7 @@ default:
 - The controlling expression must have an integer type (including `char` and `enum`); case labels must be integer constant expressions.
 - Without `break`, execution falls through into the next case. Mark intended fall-through after non-empty code with a comment (or `__attribute__((fallthrough))` in GCC/Clang, `[[fallthrough]]` in C23); `-Wextra` enables `-Wimplicit-fallthrough`.
 
-Run it: `make run EX=c_switch`
+Run it: `make run EX=c_switch` ([examples/switch.c](examples/switch.c))
 
 ## Common undefined behavior (UB) questions
 

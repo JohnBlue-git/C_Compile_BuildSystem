@@ -1,5 +1,4 @@
 # Examples for the C++ core notes CXX/00-05.
-find_package(Threads REQUIRED)
 
 # 00_core_fundamentals.md
 add_example(cxx_raii SOURCES raii.cpp)

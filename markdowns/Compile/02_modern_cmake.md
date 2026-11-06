@@ -32,7 +32,7 @@ An `INTERFACE` library does not have to be header-only code. It can be a bundle 
 ```cmake
 add_library(example_warnings INTERFACE)
 target_compile_options(example_warnings INTERFACE
-    $<$<OR:$<C_COMPILER_ID:GNU,Clang>,$<CXX_COMPILER_ID:GNU,Clang>>:-Wall -Wextra -Wpedantic>)
+    $<$<OR:$<COMPILE_LANG_AND_ID:C,GNU,Clang>,$<COMPILE_LANG_AND_ID:CXX,GNU,Clang>>:-Wall -Wextra -Wpedantic>)
 ```
 
 Every example then calls `target_link_libraries(<name> PRIVATE example_warnings)`. It gets the flags, nothing is built for `example_warnings`, and the flags do not leak to targets that do not link it.
@@ -241,7 +241,7 @@ The repo's build files are short. Read them as a small target-based project:
 
 ```cmake
 function(add_example name)
-    cmake_parse_arguments(PARSE_ARGV 1 EX "NO_TEST;WILL_FAIL" "" "SOURCES;LIBS;DATA;ARGS")
+    cmake_parse_arguments(PARSE_ARGV 1 EX "NO_TEST" "" "SOURCES;LIBS;DATA;ARGS")
 
     add_executable(${name} ${EX_SOURCES})
     target_link_libraries(${name} PRIVATE example_warnings ${EX_LIBS})
@@ -250,7 +250,6 @@ function(add_example name)
         add_test(NAME ${name} COMMAND ${name} ${EX_ARGS}
                  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
         set_tests_properties(${name} PROPERTIES TIMEOUT 30 LABELS "${EXAMPLE_LABEL}")
-        # ... WILL_FAIL
     endif()
 endfunction()
 ```
@@ -260,7 +259,7 @@ Points worth noting:
 - **Everything is per target.** Warnings come from `example_warnings` through `target_link_libraries`, and extra libraries come through `LIBS` (for example, `LIBS ${CMAKE_DL_LIBS}` for the dlopen loader). Nothing uses `include_directories()` or `link_libraries()`.
 - **`cmake_parse_arguments`** gives a CMake function keyword arguments (`NO_TEST`, `SOURCES ...`), like the built-in commands.
 - **CTest labels.** Each `examples/CMakeLists.txt` sets `EXAMPLE_LABEL` (`c`, `cxx`, `compile`, `memory`) before it calls `add_example()`, and every test gets that label. You can then run one topic: `ctest --preset debug -L compile`. Tests that are not executables use the same labels. The shell labs in [Compile/examples/CMakeLists.txt](examples/CMakeLists.txt) are registered with `add_test(NAME compile_pipeline_lab COMMAND bash .../lab.sh ...)` and `set_tests_properties(... LABELS compile TIMEOUT 60)`.
-- **`NO_TEST` / `WILL_FAIL`.** Deliberate bug demos (such as `memory_bug_use_after_free`) are built with `NO_TEST`, so `ctest` stays green. You run them by hand with the `asan` preset.
+- **`NO_TEST`.** Deliberate bug demos (such as `memory_bug_use_after_free`) are built with `NO_TEST`, so `ctest` stays green. You run them by hand with the `asan` preset.
 - **The `Makefile` adds no build logic.** `make test PRESET=asan` runs `cmake --preset asan && cmake --build --preset asan && ctest --preset asan` in the container. `make run EX=<target>` builds one target and runs it from its build directory.
 
 ## Further reading

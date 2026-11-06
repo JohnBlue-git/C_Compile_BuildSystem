@@ -73,7 +73,7 @@ in.seekg(0, std::ios::beg);          // back to the start
 
 Since C++11, `seekg()` clears `eofbit` by itself, but it does nothing while `failbit` is set, so `clear()` is still required.
 
-Run it: `make run EX=cxx_stream_state`
+Run it: `make run EX=cxx_stream_state` ([examples/library/stream/stream_state.cpp](examples/library/stream/stream_state.cpp))
 
 ## 3. Reading: `>>`, `get()`, `getline()`
 
@@ -88,7 +88,7 @@ Run it: `make run EX=cxx_stream_state`
 
 `std::getline(stream, str, delim)` takes a custom delimiter, which is the usual way to split a string (see [07](07_stl_containers.md#5-stdstring-and-text-storage)).
 
-Run it: `make run EX=cxx_stream_get_getline`
+Run it: `make run EX=cxx_stream_get_getline` ([examples/library/stream/get_getline.cpp](examples/library/stream/get_getline.cpp))
 
 ### Leftover input after `>>`
 
@@ -118,7 +118,7 @@ std::cin.get(symbol);
 | Portable | no | yes |
 | Control | none | count and delimiter |
 
-Run it: `make run EX=cxx_stream_input_buffer` (uses `std::istringstream` in place of `std::cin` so it runs without a keyboard).
+Run it: `make run EX=cxx_stream_input_buffer` ([examples/library/stream/input_buffer.cpp](examples/library/stream/input_buffer.cpp)) (uses `std::istringstream` in place of `std::cin` so it runs without a keyboard).
 
 ## 4. Writing: `<<` and `put()`
 
@@ -133,7 +133,7 @@ out.put('\n');
 - `std::cerr` is unbuffered; `std::clog` is buffered.
 - Check `if (!out)` after opening and, for important data, after the last write or `close()`.
 
-Run it: `make run EX=cxx_stream_ofstream_put` (writes `output.txt` into the test's working directory).
+Run it: `make run EX=cxx_stream_ofstream_put` ([examples/library/stream/ofstream_put.cpp](examples/library/stream/ofstream_put.cpp)) (writes `output.txt` into the test's working directory).
 
 ## 5. Interview points
 

@@ -23,6 +23,7 @@ Requirements: Docker and GNU Make. You don't need a compiler or CMake on the hos
 
 ```bash
 make image                            # build the toolchain image (once, about 2 minutes)
+make build                            # configure and build all examples
 make test                             # build all examples and run them as tests
 make run EX=cxx_move_semantics        # build and run one example
 make test PRESET=asan                 # all examples again, with AddressSanitizer + UBSan
@@ -30,6 +31,9 @@ make shell                            # interactive shell with gcc, clang, cmake
 ```
 
 Each example's target name is listed in the README of its topic directory.
+The Compile shell labs (`compile_*_lab`) are CTest tests, not build targets, so
+`make run` cannot run them. Run them with `bash markdowns/Compile/examples/<lab>/lab.sh`
+or with `ctest --preset debug -R <name>` inside `make shell`.
 
 Inside `make shell` you use plain CMake:
 
@@ -52,8 +56,11 @@ Every preset builds into `build/<preset>/`. Run `make clean` to delete all build
 ## Toolchain image
 
 [docker/Dockerfile](docker/Dockerfile) is based on `ubuntu:24.04`, **pinned by
-digest**. Every rebuild starts from the same OS snapshot, and Ubuntu LTS
-packages receive only security and bug-fix updates.
+digest**, and apt installs from a fixed date of the Ubuntu archive
+(`UBUNTU_SNAPSHOT`, served by snapshot.ubuntu.com). Every rebuild therefore
+gets the same OS layer and the same package versions. Only `ca-certificates`
+comes from the live archive, because apt needs it to reach the HTTPS snapshot
+server.
 
 | Tool | Version |
 |---|---|
@@ -62,6 +69,7 @@ packages receive only security and bug-fix updates.
 | CMake / Ninja | 3.28 / 1.11 |
 | gdb / valgrind | 15.1 / 3.22 |
 | Boost.JSON / nlohmann-json | 1.83 / 3.11.3 |
+| Other tools | lld, strace, binutils (`nm`, `objdump`, `readelf`), `file`, `less` |
 
 Why this image and not the official `gcc:<version>` image: the `gcc` image
 doesn't include CMake, clang, gdb, or valgrind, and its tags are rebuilt often.
@@ -69,7 +77,8 @@ Ubuntu LTS gives two compilers and all the debugging tools from one stable
 package set.
 
 The container runs as your host user, so build output in `build/` belongs to
-you and not to root. It also has `SYS_PTRACE`, so gdb and sanitizers work.
+you and not to root. It also has `SYS_PTRACE` and runs with `--security-opt seccomp=unconfined`,
+so gdb can turn off address randomization and the sanitizers work.
 
 ## Repository conventions
 

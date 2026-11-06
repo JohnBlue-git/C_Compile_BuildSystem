@@ -59,4 +59,4 @@ rewind(file);              /* back to the start, if you still read the file */
 
 `stdio` streams are buffered: `stdout` is line-buffered when it is a terminal and fully buffered when it is a pipe or file; `stderr` is unbuffered. Call `fflush(stream)` when output must appear now, for example before calling `fork`, before writing to the same file descriptor with `write`, or before a crash you want to debug. `setvbuf` changes the buffering mode.
 
-Run it: `make run EX=c_file_io` (reads `sample.txt`, writes and appends to a separate `output.txt`)
+Run it: `make run EX=c_file_io` ([examples/file_io.c](examples/file_io.c)) (reads `sample.txt`, writes and appends to a separate `output.txt`)

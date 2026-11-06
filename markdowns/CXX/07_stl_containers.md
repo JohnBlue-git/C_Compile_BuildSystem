@@ -307,7 +307,7 @@ Interview points:
 
   The second line probably isn't what the author meant, and the compiler won't warn. It doesn't crash; it silently allocates. Prefer `push_back` when you already have an object, and `emplace_back` when constructing from arguments is the point.
 
-Run it: `make run EX=cxx_emplace_back`
+Run it: `make run EX=cxx_emplace_back` ([examples/library/emplace_back.cpp](examples/library/emplace_back.cpp))
 
 ## 9. References in containers: `std::reference_wrapper`
 
@@ -323,7 +323,7 @@ for (int& v : refs) {
 
 The wrappers dangle if `values` reallocates or is destroyed, exactly like raw pointers. `std::ref(x)` / `std::cref(x)` create them, which is also how you pass references through `std::thread` and `std::bind`.
 
-Run it: `make run EX=cxx_reference_wrapper`
+Run it: `make run EX=cxx_reference_wrapper` ([examples/library/reference_wrapper.cpp](examples/library/reference_wrapper.cpp))
 
 ## 10. Thread safety of containers
 
@@ -347,7 +347,7 @@ auto work = [&] {
 };
 ```
 
-Run it: `make run EX=cxx_container_thread_safety` (more on mutexes in [02](02_concurrency.md)).
+Run it: `make run EX=cxx_container_thread_safety` ([examples/library/container_thread_safety.cpp](examples/library/container_thread_safety.cpp)) (more on mutexes in [02](02_concurrency.md)).
 
 ## 11. Selection rules
 

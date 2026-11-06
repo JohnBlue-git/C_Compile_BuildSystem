@@ -56,4 +56,6 @@ int allocate_value(int **out_value) {
 }
 ```
 
+Run it: `make run EX=c_callbacks` ([examples/callbacks.c](examples/callbacks.c))
+
 Passing an `int **` row table to a function (as in [00](00_fundamentals.md#dynamic-2d-arrays)) follows the same rule: the function can change `rows[i][j]`, but not the caller's `rows` variable.

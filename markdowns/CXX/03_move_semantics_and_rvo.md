@@ -140,7 +140,7 @@ void relay(T&& arg) {
 
 Rule: `std::move` for rvalue references (`T&&` with a concrete type), `std::forward<T>` for forwarding references. This is how `emplace_back` and `std::make_unique` pass arguments to constructors.
 
-Run it: `make run EX=cxx_move_semantics`
+Run it: `make run EX=cxx_move_semantics` ([examples/core/move_semantics.cpp](examples/core/move_semantics.cpp))
 
 ---
 
@@ -183,7 +183,7 @@ It forces a move where NRVO would have produced zero operations. GCC warns with 
 
 ### Verifying elision with `-fno-elide-constructors`
 
-GCC and Clang can turn off **optional** elision. The example is built twice from the same source:
+GCC and Clang can turn off **optional** elision. The example is built twice from the same source ([examples/core/rvo_nrvo.cpp](examples/core/rvo_nrvo.cpp)):
 
 ```bash
 make run EX=cxx_rvo_nrvo             # default

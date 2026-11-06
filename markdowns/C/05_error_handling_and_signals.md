@@ -72,7 +72,7 @@ cleanup:
 
 This is the standard C replacement for destructors/RAII (see the [C++ notes](../CXX/README.md)). The Linux kernel uses the same pattern.
 
-Run it: `make run EX=c_error_cleanup`
+Run it: `make run EX=c_error_cleanup` ([examples/error_cleanup.c](examples/error_cleanup.c))
 
 ## Signals
 
@@ -133,7 +133,7 @@ sigaction(SIGTERM, &action, NULL);
 - **Do not return from a handler for a hardware fault** (`SIGSEGV`, `SIGFPE`, `SIGILL`, `SIGBUS` caused by the instruction itself): the faulting instruction runs again, which usually loops forever, and the behavior is undefined. Log with `write` and call `_exit`, or `siglongjmp` out.
 - Note that integer division by zero is already UB in C; do not rely on getting `SIGFPE`. Check the divisor first.
 
-Run it: `make run EX=c_signal_handler` (sigaction, a flag, `SIG_IGN`, `SIG_DFL`)
+Run it: `make run EX=c_signal_handler` ([examples/signal_handler.c](examples/signal_handler.c)) (sigaction, a flag, `SIG_IGN`, `SIG_DFL`)
 
 ### Timeout pattern
 
@@ -150,6 +150,6 @@ sigprocmask(SIG_SETMASK, &previous, NULL);
 
 A semaphore also works, because `sem_post` is async-signal-safe: the handler calls `sem_post`, and the main thread calls `sem_wait` (retry when it fails with `EINTR`). Initialize the semaphore before installing the handlers. For new Linux code, `signalfd` or a self-pipe lets an event loop handle signals as normal file descriptor events.
 
-Run it: `make run EX=c_signal_timeout`
+Run it: `make run EX=c_signal_timeout` ([examples/signal_timeout.c](examples/signal_timeout.c))
 
 Reference: [sysprog: C stream I/O and signals](https://hackmd.io/@sysprog/c-stream-io#signal), `man 7 signal`, `man 7 signal-safety`.

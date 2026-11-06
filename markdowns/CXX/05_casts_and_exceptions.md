@@ -18,7 +18,7 @@
 
 Named casts are easy to search for (`grep _cast`) and state the intent; the compiler rejects a named cast that would need more power than its name allows.
 
-Run it: `make run EX=cxx_casts`
+Run it: `make run EX=cxx_casts` ([examples/core/casts.cpp](examples/core/casts.cpp))
 
 ### 2. `static_cast`
 
@@ -204,7 +204,7 @@ void outer_throw_copy() {
 
 To wrap an exception with extra context while keeping the original, use `std::throw_with_nested` / `std::rethrow_if_nested`. To move an exception between threads, use `std::exception_ptr` (`std::current_exception()`, `std::rethrow_exception()`); `std::future` does this for you (see [02 Concurrency](02_concurrency.md#9-task-based-concurrency-stdasync-stdfuture-stdpromise)).
 
-Run it: `make run EX=cxx_exceptions`
+Run it: `make run EX=cxx_exceptions` ([examples/core/exceptions.cpp](examples/core/exceptions.cpp))
 
 ### 9. Stack unwinding and RAII
 

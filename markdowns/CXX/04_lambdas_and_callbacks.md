@@ -202,7 +202,7 @@ Details:
 - In a `const` member function, `shared_from_this()` returns `std::shared_ptr<const T>`, so through `self` you can only call `const` members and cannot change `var_`. (The old example's `self->var; // var = 6 invalid` was about this.)
 - **C++20 deprecates implicit capture of `this` through `[=]`.** Write `[=, this]` or `[this]` explicitly. `[&]` still captures `this` implicitly.
 
-Run it: `make run EX=cxx_lambdas`
+Run it: `make run EX=cxx_lambdas` ([examples/core/lambdas.cpp](examples/core/lambdas.cpp))
 
 ---
 
@@ -246,7 +246,7 @@ Use `std::function` to **store** callbacks (event handlers, registries, `std::ve
 
 An empty `std::function` is falsy (`if (callback)`); calling it throws `std::bad_function_call`.
 
-Run it: `make run EX=cxx_callbacks`
+Run it: `make run EX=cxx_callbacks` ([examples/core/callbacks.cpp](examples/core/callbacks.cpp))
 
 ---
 

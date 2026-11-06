@@ -5,22 +5,8 @@
 # Every command is printed before it runs. All output files go to work-dir.
 set -euo pipefail
 
-src=$(cd "$(dirname "$0")" && pwd)
-work=${1:-$(mktemp -d)}
-mkdir -p "$work" && cd "$work"
+source "$(dirname "$0")/../lab_common.sh" "$@"
 cp "$src"/*.c "$src"/*.cpp .
-echo "work dir: $work"
-
-step() { printf '\n=== %s ===\n' "$*"; }
-run()  { printf '$ %s\n' "$*"; "$@"; }
-# Run a command that must fail; show its error output.
-fails() {
-    printf '$ %s    # expected to fail\n' "$*"
-    if "$@" > out.txt 2>&1; then cat out.txt; echo "LAB ERROR: command succeeded"; exit 1; fi
-    cat out.txt
-}
-# Assert that a file contains a pattern (makes the lab a real test).
-expect() { grep -q -- "$2" "$1" || { echo "LAB ERROR: '$2' not found in $1"; exit 1; }; }
 
 step "1. One stage at a time (C)"
 run gcc -E main.c -o main.i

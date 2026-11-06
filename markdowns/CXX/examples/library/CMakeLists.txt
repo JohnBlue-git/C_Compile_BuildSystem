@@ -1,7 +1,5 @@
 # Examples for CXX/06-10 (language evolution, containers, OOP, streams, JSON).
 
-find_package(Threads REQUIRED)
-
 # 06 language evolution
 add_example(cxx_optional SOURCES optional.cpp)
 

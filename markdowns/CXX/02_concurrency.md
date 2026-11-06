@@ -373,7 +373,7 @@ The future returned by `std::async` is a temporary. It is destroyed at the end o
 
 The original example "fixed" this by blocking on `std::cin.get()` at the end, but the second `std::async` had already blocked the main thread for the full sleep before "Doing other work..." was printed. The fix is to keep the future in a variable, do the other work, and then call `get()`/`wait()`.
 
-Run it: `make run EX=cxx_async_future` (prints how long the discarded future blocked, and shows exception propagation and `launch::deferred`).
+Run it: `make run EX=cxx_async_future` ([examples/core/async_future.cpp](examples/core/async_future.cpp)) (prints how long the discarded future blocked, and shows exception propagation and `launch::deferred`).
 
 ### `std::promise`: setting the result by hand
 
@@ -394,7 +394,7 @@ worker.join();
 - `get()` may be called only once on a `std::future`; a second call is undefined behavior (`valid()` becomes false). Use `shared_future` for several readers.
 - A future is a one-shot result, not a stream; for repeated messages use a queue like the one in section 8.
 
-Run it: `make run EX=cxx_promise_future`
+Run it: `make run EX=cxx_promise_future` ([examples/core/promise_future.cpp](examples/core/promise_future.cpp))
 
 ### Callbacks vs futures
 

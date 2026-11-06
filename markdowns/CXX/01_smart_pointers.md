@@ -10,7 +10,7 @@ The smart pointers added in C++11 use RAII to manage the lifetime of dynamically
 | `std::shared_ptr` | shared (reference-counted) | yes | several owners jointly manage the lifetime; costs a control block and atomic count updates |
 | `std::weak_ptr` | none (observer) | yes | observes a `shared_ptr` without extending its lifetime; breaks reference cycles |
 
-Run it: `make run EX=cxx_smart_pointers`
+Run it: `make run EX=cxx_smart_pointers` ([examples/core/smart_pointers.cpp](examples/core/smart_pointers.cpp))
 
 ---
 
@@ -245,7 +245,7 @@ std::function<void()> Session::make_weak_callback() {
 
 Choose `shared_ptr` capture when the work **must** finish (for example, finishing a write on a socket), and `weak_ptr` capture when the work only makes sense while the object is alive (UI updates, timers of a closed session).
 
-Run it: `make run EX=cxx_weak_callback`. More on captures: [04 Lambdas and Callbacks](04_lambdas_and_callbacks.md).
+Run it: `make run EX=cxx_weak_callback` ([examples/core/weak_callback.cpp](examples/core/weak_callback.cpp)). More on captures: [04 Lambdas and Callbacks](04_lambdas_and_callbacks.md).
 
 ---
 

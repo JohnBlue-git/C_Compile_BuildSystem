@@ -28,6 +28,7 @@ Sources are in [examples/](examples/). Each one is also a CTest test (label `c`)
 | `c_switch` | `case`, `break`, grouped cases, `default` | [00](00_fundamentals.md#switch) |
 | `c_types` | `enum` values, `typedef struct`, `sizeof` with padding | [01](01_data_types_and_sizeof.md) |
 | `c_union` | Union type punning and endianness, tagged union | [01](01_data_types_and_sizeof.md) |
+| `c_callbacks` | Callback with a `void *context`, pass by value/pointer, `int **` output parameter | [02](02_functions_callbacks_and_arguments.md) |
 | `c_copy` | `memset`, `memcpy`, `memmove` with overlap, `strncpy`, `snprintf` truncation | [03](03_strings_memory_and_copy.md) |
 | `c_qualifiers` | `const` pointer forms, `static` local and function, `volatile` | [04](04_qualifiers_and_preprocessor.md) |
 | `c_preprocessor` | Macro pitfalls, `static inline`, `#`, `##`, predefined macros, `#ifdef NDEBUG` | [04](04_qualifiers_and_preprocessor.md) |

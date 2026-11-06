@@ -42,7 +42,7 @@ typedef struct {
 
 `typedef` only creates an alias; it does not create a new type. Enumeration constants have type `int` in C (before C23), and an enum variable accepts any integer value without a diagnostic.
 
-Run it: `make run EX=c_types`
+Run it: `make run EX=c_types` ([examples/types.c](examples/types.c))
 
 ### Reading a different `union` member
 
@@ -65,7 +65,7 @@ struct Value {
 };
 ```
 
-Run it: `make run EX=c_union`
+Run it: `make run EX=c_union` ([examples/union.c](examples/union.c))
 
 ## `sizeof`, padding, and arrays
 

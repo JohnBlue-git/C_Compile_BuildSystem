@@ -26,7 +26,7 @@ For every copy function, the rule is the same: the destination capacity must be 
 - Do not use `sizeof pointer` as the capacity of the buffer it points to. APIs should take the capacity explicitly.
 - Avoid variable-length arrays (`char buffer[n];`) for copies: they are optional since C11 and an unchecked `n` can overflow the stack.
 
-Run it: `make run EX=c_copy`
+Run it: `make run EX=c_copy` ([examples/copy.c](examples/copy.c))
 
 ## Ownership with allocation APIs
 

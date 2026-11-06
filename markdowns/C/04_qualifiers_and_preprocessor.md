@@ -50,7 +50,7 @@ static int next_id(void) {          /* internal linkage */
 
 A `static` variable defined in a header gives *each* `.c` file that includes it its own private copy, which is rarely what you want. To share one variable, declare it `extern int g_count;` in the header and define it `int g_count;` in exactly one `.c` file. See [Compile: linkage and ODR](../Compile/00_compile_and_linkage.md).
 
-Run it: `make run EX=c_qualifiers`
+Run it: `make run EX=c_qualifiers` ([examples/qualifiers.c](examples/qualifiers.c))
 
 ## The preprocessor
 
@@ -114,4 +114,4 @@ Select code at build time, for example by platform, byte order, or debug mode:
 
 Macros can come from the command line (`gcc -DLOG_LEVEL=2`) or from CMake (`target_compile_definitions`). Useful predefined names: `__FILE__`, `__LINE__`, `__STDC_VERSION__` (`201710L` for C17), `__DATE__`, and the predefined identifier `__func__` (not a macro).
 
-Run it: `make run EX=c_preprocessor`
+Run it: `make run EX=c_preprocessor` ([examples/preprocessor.c](examples/preprocessor.c))

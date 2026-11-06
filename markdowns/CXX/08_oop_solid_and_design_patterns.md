@@ -53,7 +53,7 @@ Base `private` members are never accessible in the derived class, whatever the m
 
 A `const` data member must be initialized in the member initializer list; it can't be assigned in the constructor body.
 
-Run it: `make run EX=cxx_oop_encapsulation`
+Run it: `make run EX=cxx_oop_encapsulation` ([examples/library/oop/encapsulation.cpp](examples/library/oop/encapsulation.cpp))
 
 ## 3. Inheritance mechanics
 
@@ -94,7 +94,7 @@ auto* fast = static_cast<Derived*>(pb);         // no check: UB if *pb is not a 
 
 Needing many downcasts is usually a design smell: move the behavior into a virtual function instead.
 
-Run it: `make run EX=cxx_oop_inheritance`
+Run it: `make run EX=cxx_oop_inheritance` ([examples/library/oop/inheritance.cpp](examples/library/oop/inheritance.cpp))
 
 ## 4. Polymorphism, binding, and abstract classes
 
@@ -122,7 +122,7 @@ virtual double area() const = 0;
 
 How virtual dispatch works (vptr, vtable, cost): see [00](00_core_fundamentals.md).
 
-Run it: `make run EX=cxx_oop_polymorphism`
+Run it: `make run EX=cxx_oop_polymorphism` ([examples/library/oop/polymorphism.cpp](examples/library/oop/polymorphism.cpp))
 
 ## 5. Multiple inheritance and the diamond problem
 
@@ -153,7 +153,7 @@ Without virtual inheritance, `Kid` contains **two** `Grand` subobjects:
 - Virtual bases are constructed before all non-virtual bases.
 - The cost: an extra indirection to reach the base, and a more complex object layout.
 
-Run it: `make run EX=cxx_oop_multi_inheritance`
+Run it: `make run EX=cxx_oop_multi_inheritance` ([examples/library/oop/multi_inheritance.cpp](examples/library/oop/multi_inheritance.cpp))
 
 ## 6. SOLID in C++
 
@@ -243,7 +243,7 @@ private:
 - The instance is destroyed at program exit, in reverse order of construction. Another static object's destructor that uses it after that is undefined behavior.
 - The example also shows type aliases (`using EmployeeList = std::map<...>`) for nested maps and structured bindings to iterate them.
 
-Run it: `make run EX=cxx_oop_singleton_cache`
+Run it: `make run EX=cxx_oop_singleton_cache` ([examples/library/oop/singleton_cache.cpp](examples/library/oop/singleton_cache.cpp))
 
 ## 16. Interview decision process
 

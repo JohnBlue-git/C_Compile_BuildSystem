@@ -28,7 +28,7 @@ Run all of them as tests: `make test`, or inside `make shell`: `ctest --preset d
 The repo's own build is a small, target-based CMake project. [02_modern_cmake.md, section 7](02_modern_cmake.md#7-a-worked-example-this-repositorys-build) walks through it:
 
 - [CMakeLists.txt](../../CMakeLists.txt): C17/C++20 defaults with extensions off, `enable_testing()`, one `add_subdirectory()` per topic.
-- [cmake/Examples.cmake](../../cmake/Examples.cmake): the `example_warnings` `INTERFACE` target (`-Wall -Wextra -Wpedantic`) and the `add_example()` function, which creates a target and a labeled CTest test (`NO_TEST`, `WILL_FAIL`, `ARGS`, `DATA`, `LIBS`).
+- [cmake/Examples.cmake](../../cmake/Examples.cmake): the `example_warnings` `INTERFACE` target (`-Wall -Wextra -Wpedantic`) and the `add_example()` function, which creates a target and a labeled CTest test (`NO_TEST`, `ARGS`, `DATA`, `LIBS`).
 - [CMakePresets.json](../../CMakePresets.json): the `debug`, `release`, `asan` (AddressSanitizer + UBSan), and `clang` presets, each with its own `build/<preset>` directory.
 - [Makefile](../../Makefile): runs everything inside the Docker toolchain image (`make build|test|run|shell`, `PRESET=...`).
 

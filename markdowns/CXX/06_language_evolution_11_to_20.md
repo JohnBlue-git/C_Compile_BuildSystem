@@ -140,7 +140,7 @@ appendSuffix(std::nullopt);
 
 `std::reference_wrapper` is also how you store references in containers. See [07](07_stl_containers.md#9-references-in-containers-stdreference_wrapper).
 
-Run it: `make run EX=cxx_optional`
+Run it: `make run EX=cxx_optional` ([examples/library/optional.cpp](examples/library/optional.cpp))
 
 **Interview point**: `optional` vs exceptions vs error codes. Use `optional` when "no result" is a normal outcome (lookup miss). If the caller needs to know *why* it failed, use an exception or `std::expected<T, E>` (C++23).
 

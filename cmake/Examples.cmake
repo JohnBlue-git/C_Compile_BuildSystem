@@ -5,18 +5,17 @@
 #             [LIBS <target>...]     extra libraries to link
 #             [DATA <file>...]       files copied next to the binary; the test runs there
 #             [ARGS <arg>...]        command-line arguments for the test run
-#             [NO_TEST]              build only (for example, interactive programs)
-#             [WILL_FAIL])           the test passes when the program fails (crash demos)
+#             [NO_TEST])             build only (for example, interactive programs or crash demos)
 #
 # Each examples/ directory sets EXAMPLE_LABEL (c, cxx, compile, memory), so
 # `ctest --preset debug -L cxx` runs only that topic.
 
 add_library(example_warnings INTERFACE)
 target_compile_options(example_warnings INTERFACE
-    $<$<OR:$<C_COMPILER_ID:GNU,Clang>,$<CXX_COMPILER_ID:GNU,Clang>>:-Wall -Wextra -Wpedantic>)
+    $<$<OR:$<COMPILE_LANG_AND_ID:C,GNU,Clang>,$<COMPILE_LANG_AND_ID:CXX,GNU,Clang>>:-Wall -Wextra -Wpedantic>)
 
 function(add_example name)
-    cmake_parse_arguments(PARSE_ARGV 1 EX "NO_TEST;WILL_FAIL" "" "SOURCES;LIBS;DATA;ARGS")
+    cmake_parse_arguments(PARSE_ARGV 1 EX "NO_TEST" "" "SOURCES;LIBS;DATA;ARGS")
 
     add_executable(${name} ${EX_SOURCES})
     target_link_libraries(${name} PRIVATE example_warnings ${EX_LIBS})
@@ -30,8 +29,5 @@ function(add_example name)
                  COMMAND ${name} ${EX_ARGS}
                  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
         set_tests_properties(${name} PROPERTIES TIMEOUT 30 LABELS "${EXAMPLE_LABEL}")
-        if(EX_WILL_FAIL)
-            set_tests_properties(${name} PROPERTIES WILL_FAIL TRUE)
-        endif()
     endif()
 endfunction()

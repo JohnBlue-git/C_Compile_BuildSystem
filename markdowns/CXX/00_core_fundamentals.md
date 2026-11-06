@@ -46,7 +46,7 @@ Almost every "safe" abstraction in C++ is an application of RAII:
 
 **Interview point:** "Why does C++ not need `try...finally`?" → RAII makes cleanup the destructor's job, so no manual `finally` block is needed.
 
-Run it: `make run EX=cxx_raii` (also shows the destructor running during exception unwinding).
+Run it: `make run EX=cxx_raii` ([examples/core/raii.cpp](examples/core/raii.cpp)) (also shows the destructor running during exception unwinding).
 
 ---
 
@@ -170,7 +170,7 @@ Deduction pitfalls worth knowing:
 
 Templates usually live in headers because each user must see the full definition to instantiate it. That is the difference from an ordinary function defined in a `.cpp`: with only a declaration visible, you typically get an undefined-reference link error (unless the `.cpp` provides explicit instantiations). See [Compile notes](../Compile/00_compile_and_linkage.md).
 
-Run it: `make run EX=cxx_template`
+Run it: `make run EX=cxx_template` ([examples/core/template.cpp](examples/core/template.cpp))
 
 ---
 
@@ -238,7 +238,7 @@ class SilentFish : public Animal<SilentFish> {};  // SilentFish f; -> static_ass
 
 The `friend` + private hook keeps `make_sound()` out of the public API. GCC 13 and Clang 18 both accept the concept check on the private hook here; the access context of constraint checks is a subtle area, so if a compiler rejects it, make the hook public.
 
-Run it: `make run EX=cxx_crtp` (uncomment `SilentFish f;` to see the error).
+Run it: `make run EX=cxx_crtp` ([examples/core/crtp.cpp](examples/core/crtp.cpp)) (uncomment `SilentFish f;` to see the error).
 
 ### Limitations
 
@@ -252,7 +252,7 @@ Run it: `make run EX=cxx_crtp` (uncomment `SilentFish f;` to see the error).
 - **Inlining (the real gain):** with the exact callee known at compile time, the body is pasted into the caller, which then enables constant folding, vectorization, and loop optimizations across the interface boundary.
 - **Branch prediction:** indirect branches are harder to predict than direct ones, but for a call site that always hits the same target, modern CPUs predict it well. The lost inlining usually matters more than the branch.
 
-The example `cxx_crtp_benchmark` calls a trivial `tick()` 50M times through a base pointer and through CRTP. Numbers are **only meaningful with optimization**:
+The example `cxx_crtp_benchmark` ([examples/core/crtp_benchmark.cpp](examples/core/crtp_benchmark.cpp)) calls a trivial `tick()` 50M times through a base pointer and through CRTP. Numbers are **only meaningful with optimization**:
 
 ```bash
 make run PRESET=release EX=cxx_crtp_benchmark
