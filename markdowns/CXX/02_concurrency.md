@@ -1,6 +1,6 @@
-# C/C++ Interview Notes 02 — Concurrency / Multithreading
+# C++ Concurrency 02: Threads and Synchronization
 
-> A favorite deep-dive topic for tooling, backend, and infrastructure roles. Interviewers usually go from "can you use the API" to "do you understand the underlying behavior and pitfalls".
+> Concurrency requires more than knowing an API: correctness depends on object lifetime, synchronization, and the ordering of operations between threads.
 
 ---
 
@@ -14,7 +14,7 @@
 
 ## 2. Thread management: `std::thread` vs `std::jthread`
 
-### The `std::thread` trap
+### Destroying a joinable `std::thread`
 
 If a `std::thread` object is destroyed while still **joinable** (neither `.join()` nor `.detach()` was called), its destructor calls `std::terminate()` and the program dies.
 
@@ -49,7 +49,7 @@ int main() {
 } // t joins automatically when it leaves scope
 ```
 
-**Interview answer:** in modern C++ (especially C++20 and later), prefer `std::jthread` unless you specifically need the raw `std::thread` behavior.
+**Practical default:** prefer `std::jthread` when its automatic joining and cooperative cancellation fit the task; use `std::thread` when you need its distinct lifetime or detach behavior.
 
 ---
 
@@ -107,7 +107,7 @@ else { /* lock is busy; do something else instead of waiting */ }
 
 ### 3.4 `std::scoped_lock` (C++17): the fix for multiple locks
 
-**Background (the deadlock trap):** two threads each need `mtx1` and `mtx2` but take them in opposite order:
+**Deadlock from inconsistent lock ordering:** two threads each need `mtx1` and `mtx2` but take them in opposite order:
 
 ```
 Thread 1: locks mtx1 → waits for mtx2
@@ -256,7 +256,7 @@ The flag must be changed while holding the mutex, even if it is an atomic; other
 
 `std::atomic<T>` protects data with CPU atomic instructions (for example compare-and-swap or locked read-modify-write) instead of a lock.
 
-**`std::atomic<int>` vs a `std::mutex` around an `int` (common interview question):**
+**Choosing between an atomic and a mutex:**
 
 | | `std::mutex` + `int` | `std::atomic<int>` |
 |---|---|---|
@@ -298,7 +298,7 @@ void access_resource() {
 
 ## 8. Classic exercise: a thread-safe bounded blocking queue
 
-This one tests mutex + condition_variable + a capacity limit at once, and is a staple of tooling and infrastructure interviews.
+This exercise combines a mutex, a condition variable, and a capacity limit in a bounded queue.
 
 ```cpp
 template <typename T>
@@ -362,7 +362,7 @@ int result = square.get();             // waits if not finished; rethrows if f t
 
 Pass `std::launch::async` explicitly when you need real concurrency.
 
-### Interview point: a discarded `std::async` future blocks
+### A discarded `std::async` future blocks
 
 ```cpp
 std::async(std::launch::async, [] { sleep_for(150ms); });   // statement 1
@@ -412,4 +412,4 @@ The original example passed a callback (`std::function<void(int)>`) into the asy
 | Results and errors | pass `void*` around by hand | `std::future` carries typed values and exceptions |
 | Performance | native OS calls | usually a user-space fast path (for example futex) and the kernel only on contention; comparable speed, much better safety |
 
-**Standard interview conclusion:** unless you are writing Linux kernel code, bare-metal embedded code, or wrapping an existing C API, a modern C++ project should default to the C++11/17/20 concurrency primitives.
+For application code, the standard C++ concurrency primitives are usually the most portable starting point. Platform APIs remain appropriate when writing kernel or bare-metal code, or when integrating with an existing C interface.

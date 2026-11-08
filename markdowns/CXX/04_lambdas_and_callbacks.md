@@ -1,6 +1,6 @@
-# C/C++ Interview Notes 04 — Lambdas and Callbacks
+# C++ Fundamentals 04: Lambdas and Callbacks
 
-> Lambdas are the everyday way to pass behavior around in C++: algorithms, threads, async tasks, event callbacks. Most interview questions are about **what a capture copies, what it references, and how long that stays valid**.
+> Lambdas are a common way to pass behavior to algorithms, threads, asynchronous tasks, and event callbacks. Understanding what a capture owns or refers to is essential to keeping it valid for as long as it is used.
 > C function pointers and `void*` callbacks: see [C 02 Functions and Callbacks](../C/02_functions_callbacks_and_arguments.md).
 
 ---
@@ -84,7 +84,7 @@ counter();   // 1
 counter();   // 2  (state lives inside the closure object)
 ```
 
-**Interview point (dangling capture):** a lambda that captures locals by reference must not outlive them.
+**Lifetime rule:** a lambda that captures locals by reference must not outlive those locals.
 
 ```cpp
 std::function<int()> make_counter() {
@@ -137,7 +137,7 @@ auto owner = std::make_unique<Widget>();
 auto task  = [w = std::move(owner)] { w->run(); };              // unique_ptr moved into the closure
 ```
 
-### Trap: moving out of a capture needs `mutable`
+### Moving from a capture requires `mutable`
 
 ```cpp
 std::function<void()> cb1 = /* ... */;
@@ -155,7 +155,7 @@ auto outer_fixed = [cb1]() mutable {         // mutable: cb1 is non-const
 };
 ```
 
-The original `use_lambda.cpp` had the non-`mutable` version and labeled it "by move". It compiled and ran, but copied. This is the same `const` + `std::move` trap as in [03 Move Semantics](03_move_semantics_and_rvo.md#2-stdmove-does-not-move-anything).
+The original `use_lambda.cpp` had the non-`mutable` version and labeled it "by move". It compiled and ran, but copied. This is the same `const` + `std::move` behavior described in [03 Move Semantics](03_move_semantics_and_rvo.md#2-stdmove-does-not-move-anything).
 
 ---
 
@@ -271,7 +271,7 @@ Both declare the same alias. Reasons to prefer `using`:
 
 ---
 
-## 8. Quick interview checklist
+## 8. Summary
 
 - `[=]` copies at creation; `[&]` reads current values and can dangle.
 - By-value captures are `const` unless `mutable`; `std::move` of them copies.

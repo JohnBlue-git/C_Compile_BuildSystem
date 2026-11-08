@@ -1,4 +1,4 @@
-# C/C++ Interview Notes 05 — Casts and Exceptions
+# C++ Fundamentals 05: Casts and Exceptions
 
 > Two topics where C++ gives you precise tools and C habits get you into trouble: named casts instead of `(T)x`, and exceptions with RAII instead of error codes and `goto cleanup`.
 
@@ -98,7 +98,7 @@ const int x = 10;
 *const_cast<int*>(&x) = 100;
 ```
 
-**Interview point.** The old example wrote through `const_cast` to `const int x = 10;` and then printed `x`, which still showed `10`. That is not "const_cast did not work"; it is undefined behavior in action. The compiler is allowed to treat `x` as the constant `10` everywhere (constant folding), while the write may go to a stack slot, to read-only memory (crash), or be removed. Never write to an object that was defined `const`. The example `cxx_casts` only shows this in a comment.
+**Important:** writing through `const_cast` to an object that was defined `const` is undefined behavior. If an old example printed `10` after assigning `100`, that does not mean the cast failed: the compiler may treat `x` as the constant `10`, while the write may reach a stack slot, read-only memory, or be removed. Never modify an object that was defined `const`. The `cxx_casts` example keeps this operation only as a comment.
 
 Legitimate uses are rare: old non-const-correct APIs, and implementing a non-const overload in terms of the const one:
 
@@ -145,7 +145,7 @@ Stmt* nonsense = (Stmt*)&cj;             // compiles: silent reinterpret_cast + 
 
 The problem is not that it lacks a runtime check; it is that one syntax covers the safe and the dangerous cases. A typo or a changed type can turn a harmless `static_cast` into a `reinterpret_cast` with no warning. In C++ code, use the named casts (GCC's `-Wold-style-cast` flags C-style casts).
 
-**Interview summary:** `static_cast` by default; `dynamic_cast` when the type is unknown and the hierarchy is polymorphic; `const_cast` only for broken APIs and never to write a truly const object; `reinterpret_cast` only for bit-level work, and `std::bit_cast`/`memcpy` for type punning.
+**Cast selection in practice:** use `static_cast` for known, well-defined conversions; use `dynamic_cast` when the runtime type is uncertain and the hierarchy is polymorphic; reserve `const_cast` for const-correctness gaps in APIs, never to modify an object defined `const`; use `reinterpret_cast` only for low-level representation work, and `std::bit_cast`/`memcpy` for type punning.
 
 ---
 

@@ -1,6 +1,6 @@
-# C++ Interview Notes 06: Language Evolution, C++11 / 14 / 17 / 20
+# C++ Language Evolution 06: C++11, C++14, C++17, and C++20
 
-> Interviewers love to ask "Which standard added this, and what problem does it solve?" Don't memorize version numbers. Know **the pain point behind each feature**.
+> Each language revision adds features in response to practical needs. Understanding the problem a feature addresses makes its design and appropriate use easier to remember than memorizing version numbers.
 
 ---
 
@@ -81,7 +81,7 @@ constexpr int factorial14(int n) {
 constexpr int value = factorial14(5); // evaluated at compile time
 ```
 
-**Interview point**: "Does a `constexpr` function always run at compile time?" No. It is *guaranteed* to be evaluated at compile time only when its result is needed in a constant expression (a `constexpr` variable, an array bound, a template argument, `static_assert`). Otherwise it may run at run time like a normal function (the optimizer may still fold it). C++20 adds `consteval` for "must run at compile time".
+**Compile-time or run-time?** A `constexpr` function is guaranteed to be evaluated at compile time only when its result is needed in a constant expression (a `constexpr` variable, an array bound, a template argument, or `static_assert`). Otherwise it may run at run time like a normal function, though the optimizer may still fold it. C++20 adds `consteval` for functions that must be evaluated at compile time.
 
 ---
 
@@ -142,7 +142,7 @@ appendSuffix(std::nullopt);
 
 Run it: `make run EX=cxx_optional` ([examples/library/optional.cpp](examples/library/optional.cpp))
 
-**Interview point**: `optional` vs exceptions vs error codes. Use `optional` when "no result" is a normal outcome (lookup miss). If the caller needs to know *why* it failed, use an exception or `std::expected<T, E>` (C++23).
+**Choosing an error representation:** use `optional` when "no result" is a normal outcome, such as a lookup miss. If the caller needs to know why an operation failed, use an exception or `std::expected<T, E>` (C++23).
 
 ### `std::variant`: a type-safe union
 
@@ -222,11 +222,11 @@ template <typename T>
 concept SignedIntegral = Integral<T> && std::is_signed_v<T>;
 ```
 
-**Interview point**: "How do Concepts differ from `static_assert`?" A `static_assert` inside a template fires only **after** the template is selected and instantiated, often deep inside its body, far from the caller. A Concept is checked **during overload resolution**: unsatisfied candidates are simply removed, the error points at the call site, and several overloads can coexist (the most constrained one wins).
+**Concepts and `static_assert` operate at different stages.** A `static_assert` inside a template fires only **after** the template is selected and instantiated, often deep inside its body. A Concept is checked **during overload resolution**: unsatisfied candidates are removed, diagnostics point closer to the call site, and constrained overloads can coexist (the most constrained one wins).
 
 ---
 
-## Quick reference (for the interview)
+## Quick reference
 
 | Feature | Standard | One-liner |
 |---|---|---|

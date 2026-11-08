@@ -1,12 +1,14 @@
-# Compilation and Linking: Interview Notes
+# Compilation, Linking, and Build Systems
 
-This directory covers the build layer that C and C++ share: the preprocessor, translation units, object files, the linker, linkage, the ODR, the ABI, static and shared libraries, the dynamic loader, and CMake. It brings the compile/link material from the C and CMake sections into one path.
+This directory follows a C/C++ program from preprocessing and translation units through object files, linking, library loading, and project-level build systems. It brings related material from the C language and build-tool sections into one learning path.
 
 | Note | Contents |
 |---|---|
 | [00_compile_and_linkage.md](00_compile_and_linkage.md) | Build pipeline, name mangling and `extern "C"`, gcc vs g++ linking, shared libraries and `dlopen`, C linkage, C++ ODR, ABI boundary, debugging tools |
 | [01_gcc_gxx_cmake_basics.md](01_gcc_gxx_cmake_basics.md) | gcc/g++ by hand vs CMake, legacy vs target-based CMake, RPATH in the build tree and after install |
 | [02_modern_cmake.md](02_modern_cmake.md) | Target-based CMake, dependencies, sanitizers, presets, packaging, common traps, and this repo's build as a worked example |
+| [03_meson.md](03_meson.md) | Meson/Ninja fundamentals, CMake comparison, Docker-backed commands, and this repo's Meson build |
+| [04_build_systems.md](04_build_systems.md) | How Make, Autotools, CMake, Meson, and Ninja evolved and fit together; portability across operating systems |
 
 ## Examples
 
@@ -31,6 +33,7 @@ The repo's own build is a small, target-based CMake project. [02_modern_cmake.md
 - [cmake/Examples.cmake](../../cmake/Examples.cmake): the `example_warnings` `INTERFACE` target (`-Wall -Wextra -Wpedantic`) and the `add_example()` function, which creates a target and a labeled CTest test (`NO_TEST`, `ARGS`, `DATA`, `LIBS`).
 - [CMakePresets.json](../../CMakePresets.json): the `debug`, `release`, `asan` (AddressSanitizer + UBSan), and `clang` presets, each with its own `build/<preset>` directory.
 - [Makefile](../../Makefile): runs everything inside the Docker toolchain image (`make build|test|run|shell`, `PRESET=...`).
+- [meson.build](../../meson.build): registers the same examples and test suites for Meson/Ninja; use `make meson-build|meson-test|meson-run`.
 
 ## Related notes
 

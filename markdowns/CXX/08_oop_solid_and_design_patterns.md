@@ -1,4 +1,4 @@
-# C++ Interview Notes 08: OOP, SOLID, and Design Patterns
+# C++ Design 08: Object-Oriented Programming and Design Patterns
 
 First the OOP vocabulary and the C++ mechanics behind it (access control, binding, casts, multiple inheritance). Then SOLID and the common patterns.
 
@@ -245,7 +245,7 @@ private:
 
 Run it: `make run EX=cxx_oop_singleton_cache` ([examples/library/oop/singleton_cache.cpp](examples/library/oop/singleton_cache.cpp))
 
-## 16. Interview decision process
+## 16. Choosing an abstraction
 
 1. Identify the axis of change: creation, algorithm, notification, state, or an external API.
 2. Try a function, composition, or a simple data table before a class hierarchy.

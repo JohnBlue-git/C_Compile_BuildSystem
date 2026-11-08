@@ -1,8 +1,8 @@
-# C++ Interview Notes 07: Common STL Containers
+# C++ Standard Library 07: Containers
 
 Choosing a container is not only about Big-O. Also consider contiguous storage, cache locality, number of allocations, iterator/reference stability, ordering requirements, and ownership.
 
-Full API lists are on [cppreference](https://en.cppreference.com/w/cpp/container). This note keeps what interviews ask about.
+Full API lists are on [cppreference](https://en.cppreference.com/w/cpp/container). This guide focuses on container selection, performance, and behavioral trade-offs.
 
 ## 1. Quick selection table
 
@@ -120,7 +120,7 @@ std::set<int> unique_values{3, 1, 3, 2};    // iteration order: 1, 2, 3
 
 There is no `<multimap>`, `<multiset>`, `<unordered_multimap>`, or `<unordered_multiset>` header.
 
-**Interview points about `map::operator[]`:**
+**Behavior of `map::operator[]`:**
 
 - It *inserts* a default-constructed value when the key is missing. A lookup like `if (m[k] == 0)` silently grows the map.
 - It is non-const, so it can't be used on a `const std::map`. Use `at()` (throws) or `find()`.
@@ -191,7 +191,7 @@ For a min-heap, swap the comparator:
 std::priority_queue<int, std::vector<int>, std::greater<int>> min_heap;
 ```
 
-**Interview point**: why does `pop()` return `void`? Returning the element by value could throw while copying it *after* it was already removed, losing it. Separating `top()` and `pop()` keeps the operation exception-safe.
+`pop()` returns `void` so removing an element cannot be followed by a throwing copy that loses the already-removed value. Reading with `top()` before calling `pop()` keeps those steps explicit and exception-safe.
 
 ## 5. `std::string` and text storage
 
@@ -266,7 +266,7 @@ auto& [num, ch, str] = t;           // C++17 structured bindings (references int
 | Cache locality | usually good | usually poor |
 | Iterator stability | reallocation invalidates all | other nodes stay valid |
 
-### Iterator invalidation cheat sheet
+### Iterator invalidation summary
 
 - `vector`: a reallocation invalidates all iterators/references/pointers. Without one, insert/erase invalidates those at or after the affected position.
 - `deque`: insert at either end invalidates iterators (not references); anything in the middle invalidates both. Re-acquire iterators after modifying it.
@@ -292,7 +292,7 @@ v.push_back(Point(1, 2));   // constructed, moved
 v.emplace_back(1, 2);       // constructed
 ```
 
-Interview points:
+Move and emplacement considerations:
 
 - **The move constructor must take `T&&`, not `const T&&`.** A `const T&&` overload binds to temporaries and gets chosen, but it can't steal anything from a `const` object, so it is really a copy with a misleading name.
 - **Mark the move constructor `noexcept`.** On reallocation, `vector` uses `std::move_if_noexcept`: if the move constructor might throw (and a copy constructor exists), it copies the old elements to keep the strong exception guarantee.

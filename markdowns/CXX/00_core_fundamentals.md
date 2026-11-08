@@ -1,7 +1,6 @@
-# C/C++ Interview Notes 00 — Core Fundamentals
+# C++ Fundamentals 00: Core Language and Object Lifetime
 
-> Foundations that almost every C++ interview touches.
-> The later notes (smart pointers, concurrency, move semantics, lambdas, casts, language evolution, containers, OOP) build on these ideas.
+> These foundations support the later topics: smart pointers, concurrency, move semantics, lambdas, casts, language evolution, containers, and object-oriented design.
 
 ---
 
@@ -44,7 +43,7 @@ Almost every "safe" abstraction in C++ is an application of RAII:
 - `std::fstream` (files)
 - `std::jthread` (thread lifetime)
 
-**Interview point:** "Why does C++ not need `try...finally`?" → RAII makes cleanup the destructor's job, so no manual `finally` block is needed.
+**Key idea:** RAII ties cleanup to object lifetime, so resources are released during normal scope exit and stack unwinding without a separate `finally` block.
 
 Run it: `make run EX=cxx_raii` ([examples/core/raii.cpp](examples/core/raii.cpp)) (also shows the destructor running during exception unwinding).
 
@@ -442,7 +441,7 @@ public:
 
 Rule of Zero does not mean "never copy". It means the copy/move/release work is delegated to members that already follow RAII. Copying a `std::vector` creates independent elements, moving it usually just transfers the internal buffer; `std::unique_ptr` forbids copying and allows moving, so a class that contains one becomes non-copyable but usually still movable.
 
-**Interview point:** "When does the compiler refuse to generate a copy constructor?" → When the class has a non-copyable member such as `std::unique_ptr`, the implicit copy constructor is defined as deleted. Also know the generation rules:
+**Copy construction:** When a class has a non-copyable member such as `std::unique_ptr`, its implicitly generated copy constructor is defined as deleted. The generation rules are:
 - A user-declared destructor or copy operation **suppresses the implicit move operations**; "moves" then silently fall back to copies. (Implicit copy is still generated, but that is deprecated.)
 - A user-declared move operation makes the implicit copy operations **deleted**.
 
@@ -536,7 +535,7 @@ public:
 
 Reading tip: read right to left. `int* const` is "const pointer to int"; `const int*` is "pointer to const int".
 
-**Interview point:** "What is `mutable` for?" → It lets a member change inside a `const` member function. Typical uses are caches and internal locks, for example the `mutable std::shared_mutex cache_mutex;` in the [DNS cache example](02_concurrency.md#4-stdshared_mutex-c17-many-readers-one-writer): `get_ip() const` still has to lock it.
+**Use `mutable` sparingly:** it allows a member to change inside a `const` member function. Typical cases include caches and synchronization state, such as the `mutable std::shared_mutex cache_mutex;` in the [DNS cache example](02_concurrency.md#4-stdshared_mutex-c17-many-readers-one-writer), where `get_ip() const` still needs to lock the mutex.
 
 Removing `const` with `const_cast` and then writing to an object that was **defined** `const` is undefined behavior; see [05 Casts and Exceptions](05_casts_and_exceptions.md).
 

@@ -258,7 +258,7 @@ Sections 1 and 2 stop at Link. The diagram shows Load as a separate stage: **at 
 
 ### 3.1 What a shared library depends on: `NEEDED`
 
-The `NEEDED` entries in the dynamic section list the libraries the loader must load. A common interview claim is "a C++ shared library always depends on libstdc++". On this toolchain that is **not** true, because Ubuntu's GCC passes `--as-needed` to the linker. A library gets a `NEEDED` entry only if it really uses a symbol from that library:
+The `NEEDED` entries in the dynamic section list the libraries the loader must load. It is easy to assume that every C++ shared library depends on `libstdc++`, but on this toolchain that is **not** always true: Ubuntu's GCC passes `--as-needed` to the linker. A library gets a `NEEDED` entry only if it uses a symbol from that library:
 
 ```text
 $ gcc -fPIC -shared add.c -o libadd_c.so
@@ -724,7 +724,7 @@ When the linker fails, classify the error first:
 - [Modern CMake](02_modern_cmake.md): target-based CMake, dependencies, sanitizers, installing, and common traps.
 - [Stack, heap, and object lifetime](../Memory/00_stack_heap_and_object_lifetime.md): storage duration and what happens at run time.
 
-## Interview quick check
+## Concept checks
 
 1. What does `#include` produce? A larger translation unit (text pasting), not a separate library.
 2. Why does a plain global definition in a header cause `multiple definition`? Every translation unit that includes it emits an external definition.

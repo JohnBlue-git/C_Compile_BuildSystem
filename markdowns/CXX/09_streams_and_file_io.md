@@ -1,4 +1,4 @@
-# C++ Interview Notes 09: Streams and File I/O
+# C++ Standard Library 09: Streams and File I/O
 
 ## 1. The stream classes
 
@@ -135,7 +135,7 @@ out.put('\n');
 
 Run it: `make run EX=cxx_stream_ofstream_put` ([examples/library/stream/ofstream_put.cpp](examples/library/stream/ofstream_put.cpp)) (writes `output.txt` into the test's working directory).
 
-## 5. Interview points
+## 5. Key practices
 
 - **"Why is `while (!in.eof())` wrong?"** Because `eof()` reports the past, not the future; the last read fails and the loop body still runs. Loop on the read: `while (in >> x)` or `while (std::getline(in, line))`.
 - **"Why does `getline` return an empty string after `cin >> n`?"** `>>` leaves the `'\n'`; `getline` reads up to it. Call `ignore()` first.

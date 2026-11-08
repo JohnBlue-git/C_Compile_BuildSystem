@@ -20,7 +20,7 @@ Inside that function, `sizeof(values)` gives the size of a pointer, not the numb
 
 ### Dynamic 2D arrays
 
-A common interview pattern is a 2D array built as an array of row pointers (`int **`): allocate the row table, then each row, and free in the reverse order.
+One common way to represent a dynamic 2D array is an array of row pointers (`int **`): allocate the row table, then each row, and free in the reverse order.
 
 ```c
 int **rows = calloc(n_rows, sizeof *rows);       /* row pointers start as NULL */

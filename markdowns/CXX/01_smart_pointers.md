@@ -1,4 +1,4 @@
-# C/C++ Interview Notes 01 — Smart Pointers
+# C++ Fundamentals 01: Smart Pointers
 
 ## Overview
 
@@ -106,7 +106,7 @@ Trade-offs of `make_shared`:
 
 ### Is `shared_ptr` thread-safe?
 
-A frequent interview trap. The correct answer has three parts:
+Thread safety for `shared_ptr` has three separate parts:
 
 | What | Thread-safe? |
 |---|---|

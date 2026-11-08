@@ -11,7 +11,7 @@ runpath() { printf '$ readelf -d %s | grep RUNPATH\n' "$1"; readelf -d "$1" | gr
 step "1. Configure and build; the verbose log shows the real g++ commands"
 run cmake -S "$src" -B build -G Ninja -DCMAKE_BUILD_TYPE=Release > /dev/null
 printf '$ cmake --build build --verbose | grep -o "c++ .*"\n'
-cmake --build build --verbose | grep -o 'c++ .*' | sed "s|$src|<src>|g; s|$work|<work>|g"
+cmake --build build --clean-first --verbose | grep -o 'c++ .*' | sed "s|$src|<src>|g; s|$work|<work>|g"
 
 step "2. Build tree: CMake writes the build directory into RUNPATH"
 runpath build/app

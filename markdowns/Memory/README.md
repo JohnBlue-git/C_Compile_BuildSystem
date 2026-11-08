@@ -1,4 +1,4 @@
-# Memory: Interview Notes
+# Memory and Object Lifetime
 
 This directory covers the memory model and object lifetime that C and C++ share, so stack/heap, allocators, and storage duration are not repeated in each language section.
 

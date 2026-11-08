@@ -1,4 +1,4 @@
-# C++ Interview Notes
+# C++ Language and Library Tutorials
 
 This directory covers the C++ language, the standard library, and object-oriented
 design. The C language, the shared memory model, and the build toolchain are in
@@ -15,15 +15,15 @@ design. The C language, the shared memory model, and the build toolchain are in
 | [04_lambdas_and_callbacks.md](04_lambdas_and_callbacks.md) | Closure types, capture modes, `mutable`, init-capture, `this` vs `shared_from_this`, `std::function` vs template callbacks, `using` vs `typedef` |
 | [05_casts_and_exceptions.md](05_casts_and_exceptions.md) | `static`/`dynamic`/`const`/`reinterpret`/C-style casts, `bit_cast`; `try`/`catch`, `throw;` vs `throw e;`, unwinding, `noexcept`, exception-safety guarantees |
 | [06_language_evolution_11_to_20.md](06_language_evolution_11_to_20.md) | What modern C++ aims for; C++11/14/17/20 features, `optional`, `variant`, Concepts |
-| [07_stl_containers.md](07_stl_containers.md) | Choosing a container, cheat sheet, `map::operator[]` pitfalls, iterator invalidation, `push_back` vs `emplace_back`, container thread safety |
+| [07_stl_containers.md](07_stl_containers.md) | Choosing a container, selection reference, `map::operator[]` pitfalls, iterator invalidation, `push_back` vs `emplace_back`, container thread safety |
 | [08_oop_solid_and_design_patterns.md](08_oop_solid_and_design_patterns.md) | OOP vocabulary, access control, upcast/downcast, binding, abstract classes, diamond/virtual inheritance, SOLID, design patterns |
 | [09_streams_and_file_io.md](09_streams_and_file_io.md) | Stream classes, state flags, the `while (!eof())` anti-pattern, `>>`/`get`/`getline`, leftover input, output streams |
 | [10_json_libraries.md](10_json_libraries.md) | nlohmann/json vs Boost.JSON: basics, JSON Pointer, how to choose |
 
 ## Suggested reading order
 
-If time is short: **00 → [Memory](../Memory/README.md) → 01 → 03 → 02 → 07 → 08 → 04 → 05 → 06**.
-09 and 10 are reference material. For linkage and the build pipeline, read [Compile](../Compile/README.md).
+For a guided path, start with **00 → [Memory](../Memory/README.md) → 01 → 03 → 02 → 07 → 08 → 04 → 05 → 06**.
+Use 09 and 10 as topic references. For linkage and the build pipeline, read [Compile](../Compile/README.md).
 
 ## Examples
 
@@ -38,7 +38,7 @@ Run any example with `make run EX=<target>` from the repository root. Run all of
 | `cxx_crtp_benchmark` | CRTP vs virtual call cost (use `PRESET=release`) | 00 |
 | `cxx_smart_pointers` | Ownership transfer, sharing, `weak_ptr::lock`, `bad_weak_ptr` | 01 |
 | `cxx_weak_callback` | Stored callback that captures `weak_ptr` vs `shared_ptr` | 01 |
-| `cxx_async_future` | `std::async`, the discarded-future trap, exception propagation | 02 |
+| `cxx_async_future` | `std::async`, blocking behavior of a discarded future, exception propagation | 02 |
 | `cxx_promise_future` | `promise`/`future` across threads, `broken_promise` | 02 |
 | `cxx_move_semantics` | Move constructor/assignment, moved-from state, `noexcept` growth | 03 |
 | `cxx_rvo_nrvo` / `cxx_rvo_nrvo_no_elide` | Copy elision on and off (`-fno-elide-constructors`) | 03 |

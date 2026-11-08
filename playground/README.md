@@ -1,12 +1,14 @@
 # Playground
 
-A scratch area for trying things out. Every `*.c` and `*.cpp` file directly in
-this directory becomes its own executable named `pg_<file stem>`. You don't
-need to edit any CMake file.
+A scratch area for trying things out. CMake discovers each `*.c` and `*.cpp`
+file directly in this directory and builds it as `pg_<file stem>`. Meson keeps
+sources explicit, so add each new program to [meson.build](meson.build) as an
+`executable()` target with the same naming convention.
 
 ```bash
 cp hello.cpp try_variant.cpp     # write some code
 make run EX=pg_try_variant       # build and run it in Docker
+make meson-run EX=pg_try_variant  # after adding the Meson target
 make run PRESET=asan EX=pg_try_variant   # same, with AddressSanitizer + UBSan
 ```
 

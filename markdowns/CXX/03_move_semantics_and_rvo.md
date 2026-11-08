@@ -1,4 +1,4 @@
-# C/C++ Interview Notes 03 — Move Semantics and RVO/NRVO
+# C++ Fundamentals 03: Move Semantics and Copy Elision
 
 > How C++ avoids copies: moving resources out of objects that are about to die, and not creating the temporary at all (copy elision).
 > Prerequisite: Rule of Five in [00 Core Fundamentals](00_core_fundamentals.md#5-rule-of-zero--three--five).
@@ -33,7 +33,7 @@ It says "this object may be moved from". The actual work happens when the result
 
 Never declare or define your own `move` in the global namespace or in `std` (the old example re-declared it at global scope); just include `<utility>`.
 
-**Interview point:** `std::move` on a `const` object silently copies:
+**A common surprise:** applying `std::move` to a `const` object usually selects the copy constructor:
 
 ```cpp
 const std::string frozen = "still here";
@@ -41,7 +41,7 @@ std::string taken = std::move(frozen);   // const std::string&& → binds to the
 // frozen is unchanged; no move happened, and no warning by default
 ```
 
-The same trap appears in a non-`mutable` lambda, where by-value captures are `const` (see [04 Lambdas](04_lambdas_and_callbacks.md#4-init-capture-and-moving-into-a-lambda)).
+The same issue appears in a non-`mutable` lambda, where by-value captures are `const` (see [04 Lambdas](04_lambdas_and_callbacks.md#4-init-capture-and-moving-into-a-lambda)).
 
 ---
 
@@ -202,7 +202,7 @@ Before C++17, `-fno-elide-constructors` also added moves for the prvalue case; i
 
 ---
 
-## 8. Quick interview checklist
+## 8. Summary
 
 - `std::move` is a cast; the move constructor does the work; `const` objects are copied.
 - Moved-from = valid but unspecified; reset before reuse.

@@ -1,4 +1,4 @@
-# C++ Interview Notes 10: JSON Libraries (nlohmann/json and Boost.JSON)
+# C++ Libraries 10: JSON with nlohmann/json and Boost.JSON
 
 The standard library has no JSON support. The two common choices:
 
@@ -46,7 +46,7 @@ int age = loaded.at("age").get<int>();
 std::string email = loaded.value("email", "<none>");   // default if missing
 ```
 
-Interview-relevant details:
+Details to keep in mind:
 
 - **`operator<<` prints JSON, not the raw value**: `std::cout << loaded["name"]` prints `"Alice"` with quotes. Use `get<std::string>()` for the C++ value.
 - **`operator[]` vs `at()`**: on a non-const object, `j["missing"]` *inserts* a `null` (like `std::map::operator[]`); on a const object it is undefined behavior for a missing key. `at()` throws `json::out_of_range`. `value(key, default)` returns a default.
@@ -101,7 +101,7 @@ if (auto* email = o.if_contains("email")) { /* ... */ }      // nullptr if missi
 ```
 
 - Each `value` has a **kind**; access is explicit: `as_object()`, `as_array()`, `as_string()`, `as_int64()`, `as_bool()`. `as_*` throws on the wrong kind; `if_*` returns a pointer or `nullptr`; `get_*` is unchecked.
-- `json::object::operator[]` inserts a `null` for a missing key, the same trap as `std::map`.
+- `json::object::operator[]` inserts a `null` for a missing key, as `std::map::operator[]` does.
 - `operator<<` on a `json::value` or `json::string` prints JSON (with quotes). Use `value_to<std::string>()` or the string's conversion to `std::string_view` for the raw text.
 - `value_from` / `value_to` with `tag_invoke` overloads convert your own types.
 - For error codes instead of exceptions: `json::parse(text, ec)`.

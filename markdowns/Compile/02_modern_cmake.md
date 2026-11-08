@@ -1,6 +1,6 @@
 # Modern CMake (Build Systems)
 
-> Interviewers use CMake questions to find out whether you have really worked on a production build. The core topic is the difference between **Modern (target-based) CMake** and **old (variable-based) CMake**. For a stage-by-stage comparison (include/compile/link/load/install), read sections 3 and 4 of [gcc/g++ and CMake basics](01_gcc_gxx_cmake_basics.md) first. This note assumes you know the core idea, "target-based CMake replaces directory-scoped variables with per-target properties", and covers the details and traps of production projects.
+> This chapter develops a practical, target-based approach to CMake and explains how targets, dependencies, compile options, and build configurations fit together. For a stage-by-stage comparison (include/compile/link/load/install), read sections 3 and 4 of [gcc/g++ and CMake basics](01_gcc_gxx_cmake_basics.md) first.
 
 This repository's own build is a small, working example of target-based CMake. Section 7 walks through it, and the sections below point to it where it applies.
 
@@ -138,6 +138,29 @@ ctest --preset asan              # test presets set outputOnFailure
 ```
 
 Each preset gets its own build directory, which is the out-of-source idea above.
+
+### CMake variables, cache entries, and options
+
+Normal CMake variables are values used while CMake configures the project. Their visibility follows CMake scopes: directory scopes inherit from parent directories, while functions and `block()` create local scopes. They do not persist as user settings after configuration.
+
+Cache entries are stored in that build directory's `CMakeCache.txt` and survive reconfiguration. A normal variable of the same name can shadow a cache entry while CMake evaluates that scope. `set(... CACHE ...)` supplies an initial cache value and normally leaves an existing entry unchanged; `-D` supplies a value before project files are evaluated.
+
+```cmake
+set(LOCAL_MODE "fast")
+set(APP_KIND "demo" CACHE STRING "Which app to build")
+set_property(CACHE APP_KIND PROPERTY STRINGS demo full)
+option(BUILD_APP1 "Build APP1" OFF)
+
+if(BUILD_APP1)
+    add_subdirectory(APP1)
+endif()
+```
+
+```sh
+cmake -S . -B build -DAPP_KIND:STRING=full -DBUILD_APP1=ON
+```
+
+Use a normal variable for configure-time implementation details, and a cache option when callers should choose or persist a build setting. CMake options are boolean cache entries. See the [CMake variable reference](https://cmake.org/cmake/help/latest/manual/cmake-language.7.html#variables) and this repository's [Meson comparison](03_meson.md) for the corresponding Meson option model.
 
 ## 5. `target_include_directories`: build vs install
 

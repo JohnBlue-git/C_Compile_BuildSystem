@@ -12,7 +12,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 ARG UBUNTU_SNAPSHOT=20261102T000000Z
 
 # Compilers:  gcc/g++ 13, clang/clang++ 18
-# Build:      cmake 3.28, ninja, make
+# Build:      cmake 3.28, meson, ninja, make
 # Debug:      gdb, valgrind, strace, binutils (nm, objdump, readelf)
 # Libraries:  Boost.JSON, nlohmann/json (used by CXX/examples/library/json)
 # snapshot.ubuntu.com is HTTPS only, and the base image has no CA certificates.
@@ -26,6 +26,7 @@ RUN apt-get update \
         clang \
         lld \
         cmake \
+        meson \
         ninja-build \
         gdb \
         valgrind \
